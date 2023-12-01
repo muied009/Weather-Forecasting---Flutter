@@ -24,6 +24,14 @@ class _WeatherHomeState extends State<WeatherHome> {
   ///Provider er object lagbe karon location er jonno lat lng provider e pathate hobe
   late WeatherProvider weatherProvider;
   int? isOn = 0;
+  late Color activeSwitchColor;
+
+  @override
+  void initState() {
+    super.initState();
+    // Set the initial color based on isOn value
+    activeSwitchColor = isOn == 0 ? Colors.blue : Colors.green;
+  }
 
 
   @override
@@ -73,9 +81,9 @@ class _WeatherHomeState extends State<WeatherHome> {
           ///true hoile column return korbe
 
           weatherProvider.hasDataLoaded ? Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                temperatureSwitch(),
+                customToggleSwitch(),
 
                 ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
 
@@ -99,9 +107,7 @@ class _WeatherHomeState extends State<WeatherHome> {
       minWidth: 40,
       cornerRadius: 20,
       fontSize: 20,
-      activeBgColors: isOn == 0
-          ? [[Colors.green], [Colors.blue]]
-          : [[Colors.blue], [Colors.green]],
+      activeBgColor: [activeSwitchColor],
       activeFgColor: Colors.white,
       inactiveBgColor: Colors.grey,
       inactiveFgColor: Colors.white,
@@ -110,10 +116,61 @@ class _WeatherHomeState extends State<WeatherHome> {
       onToggle: (value) async {
         setState(() {
           isOn = value;
+          // Update the color based on the new isOn value
+          activeSwitchColor = isOn == 0 ? Colors.blue : Colors.green;
         });
         weatherProvider.setTempUnit(isOn!);
         weatherProvider.getDataAfterNewLocation();
       },
     );
   }
+
+  Widget customToggleSwitch() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              isOn = 0;
+              activeSwitchColor = Colors.blue;
+            });
+            weatherProvider.setTempUnit(isOn!);
+            weatherProvider.getDataAfterNewLocation();
+          },
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: isOn == 0 ? Colors.blue : Colors.grey,
+            ),
+            child: const Text(
+              '$degreeSign$celsius',
+              style: TextStyle(color: Colors.white,fontSize: 25),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              isOn = 1;
+              activeSwitchColor = Colors.green;
+            });
+            weatherProvider.setTempUnit(isOn!);
+            weatherProvider.getDataAfterNewLocation();
+          },
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: isOn == 1 ? Colors.green : Colors.grey,
+            ),
+            child: const Text(
+              '$degreeSign$fahrenheit',
+              style: TextStyle(color: Colors.white,fontSize: 25),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
 }
