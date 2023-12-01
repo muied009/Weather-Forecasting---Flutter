@@ -28,7 +28,7 @@ class WeatherProvider extends ChangeNotifier {
     _longitude = lng;
   }
 
-  setTempUnit(int isOn){
+  setTempUnit(int? isOn){
     if(isOn == 1){
       unit = imperial;
     }else{

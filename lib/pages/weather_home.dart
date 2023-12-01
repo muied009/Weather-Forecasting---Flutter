@@ -6,6 +6,7 @@ import 'package:weather_forecasting/customWidgets/current_section.dart';
 import 'package:weather_forecasting/customWidgets/forecast_section.dart';
 import 'package:weather_forecasting/pages/settings.dart';
 import 'package:weather_forecasting/provider/weather_provider.dart';
+import 'package:weather_forecasting/utils/extensions.dart';
 import 'package:weather_forecasting/utils/location_service.dart';
 
 import '../utils/constants.dart';
@@ -23,14 +24,19 @@ class _WeatherHomeState extends State<WeatherHome> {
 
   ///Provider er object lagbe karon location er jonno lat lng provider e pathate hobe
   late WeatherProvider weatherProvider;
-  int? isOn = 0;
+  int isOn = 0;
   late Color activeSwitchColor;
 
   @override
   void initState() {
+    getTempIntStatus().then((value) {
+      setState(() {
+        isOn = value!;
+      });
+    });
     super.initState();
     // Set the initial color based on isOn value
-    activeSwitchColor = isOn == 0 ? Colors.blue : Colors.green;
+    //activeSwitchColor = isOn == 0 ? Colors.blue : Colors.green;
   }
 
 
@@ -45,6 +51,7 @@ class _WeatherHomeState extends State<WeatherHome> {
   getLocation() async {
     final position = await determinePosition();
     weatherProvider.setNewLocation(position.latitude, position.longitude);
+    weatherProvider.setTempUnit(await getTempIntStatus());
     weatherProvider.getDataAfterNewLocation();
   }
 
@@ -83,6 +90,7 @@ class _WeatherHomeState extends State<WeatherHome> {
           weatherProvider.hasDataLoaded ? Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                //temperatureSwitch(),
                 customToggleSwitch(),
 
                 ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
@@ -101,29 +109,28 @@ class _WeatherHomeState extends State<WeatherHome> {
     );
   }
 
-  ToggleSwitch temperatureSwitch() {
+  /*Widget temperatureSwitch() {
     return ToggleSwitch(
       minHeight: 30,
       minWidth: 40,
       cornerRadius: 20,
       fontSize: 20,
-      activeBgColor: [activeSwitchColor],
-      activeFgColor: Colors.white,
+      activeBgColors: const [[Colors.green],[Colors.blue]],
+      activeFgColor: Colors.black,
       inactiveBgColor: Colors.grey,
-      inactiveFgColor: Colors.white,
+      inactiveFgColor: Colors.black,
       totalSwitches: 2,
       labels: const ['$degreeSign$celsius', '$degreeSign$fahrenheit'],
       onToggle: (value) async {
         setState(() {
-          isOn = value;
-          // Update the color based on the new isOn value
-          activeSwitchColor = isOn == 0 ? Colors.blue : Colors.green;
+          isOn = value!;
         });
-        weatherProvider.setTempUnit(isOn!);
+        setTempIntStatus(isOn);
+        weatherProvider.setTempUnit(isOn);
         weatherProvider.getDataAfterNewLocation();
       },
     );
-  }
+  }*/
 
   Widget customToggleSwitch() {
     return Row(
@@ -135,7 +142,8 @@ class _WeatherHomeState extends State<WeatherHome> {
               isOn = 0;
               activeSwitchColor = Colors.blue;
             });
-            weatherProvider.setTempUnit(isOn!);
+            setTempIntStatus(isOn);
+            weatherProvider.setTempUnit(isOn);
             weatherProvider.getDataAfterNewLocation();
           },
           child: Container(
@@ -155,7 +163,8 @@ class _WeatherHomeState extends State<WeatherHome> {
               isOn = 1;
               activeSwitchColor = Colors.green;
             });
-            weatherProvider.setTempUnit(isOn!);
+            setTempIntStatus(isOn);
+            weatherProvider.setTempUnit(isOn);
             weatherProvider.getDataAfterNewLocation();
           },
           child: Container(
