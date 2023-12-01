@@ -27,12 +27,8 @@ class _WeatherHomeState extends State<WeatherHome> {
 
   @override
   void didChangeDependencies() {
-    Provider.of<WeatherProvider>(context, listen: false)
-        .getCurrentWeatherData();
-    Provider.of<WeatherProvider>(context, listen: false)
-        .getForecastWeatherData();
-
-    //getLocation();
+    weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
+    getLocation();
 
     super.didChangeDependencies();
   }
@@ -75,39 +71,7 @@ class _WeatherHomeState extends State<WeatherHome> {
 
           ///true hoile column return korbe
 
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ToggleSwitch(
-                minHeight: 30,
-                minWidth: 40,
-                cornerRadius: 20,
-                fontSize: 20,
-                activeBgColors: const [[Colors.green], [Colors.blue]],
-                activeFgColor: Colors.white,
-                inactiveBgColor: Colors.grey,
-                inactiveFgColor: Colors.white,
-                totalSwitches: 2,
-                labels: const [
-                  '$degreeSign$celsius',
-                  '$degreeSign$fahrenheit'
-                ],
-                onToggle: (index) {
-                  print('selected Item position $index');
-                },
-              ),
-
-              ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
-
-              CurrentWeatherSection(
-                  currentWeatherModel: weatherProvider
-                      .currentWeatherModel!),
-              ForecastSection(forecastItems: weatherProvider.forecastWeatherModel!.list!),
-
-            ],
-          )
-
-          /*weatherProvider.hasDataLoaded ? Column(
+          weatherProvider.hasDataLoaded ? Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ToggleSwitch(
@@ -139,7 +103,7 @@ class _WeatherHomeState extends State<WeatherHome> {
               ],
             ) : const Center(
               child: Text('Please Wait..'),
-            ),*/
+            ),
         ),
       ),
     );

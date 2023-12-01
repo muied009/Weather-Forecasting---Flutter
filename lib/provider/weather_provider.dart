@@ -8,8 +8,6 @@ import 'package:weather_forecasting/apiModels/forecast_weather_model.dart';
 import 'package:weather_forecasting/utils/constants.dart';
 
 class WeatherProvider extends ChangeNotifier {
-  static const lat = 23.8105;
-  static const lng = 90.3372;
 
   double _latitude = 0.0;
   double _longitude = 0.0;
@@ -25,22 +23,20 @@ class WeatherProvider extends ChangeNotifier {
   bool get hasDataLoaded => currentWeatherModel != null &&
       forecastWeatherModel != null;
 
-
-
   setNewLocation(double lat, double lng){
     _latitude = lat;
     _longitude = lng;
   }
 
   getDataAfterNewLocation() {
-    getCurrentWeatherData();
-    getForecastWeatherData();
+    _getCurrentWeatherData();
+    _getForecastWeatherData();
   }
 
 
   ///server/database/third party file theke data asar somoy anra future er async and await function use korbo
-  Future<void> getCurrentWeatherData() async {
-    final uri = Uri.parse('https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lng&units=$unit&appid=$weatherApiKey');
+  Future<void> _getCurrentWeatherData() async {
+    final uri = Uri.parse('https://api.openweathermap.org/data/2.5/weather?lat=$_latitude&lon=$_longitude&units=$unit&appid=$weatherApiKey');
     try {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
@@ -56,9 +52,9 @@ class WeatherProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getForecastWeatherData() async {
+  Future<void> _getForecastWeatherData() async {
     final uri = Uri.parse(
-        'https://api.openweathermap.org/data/2.5/forecast?lat=$lat&lon=$lng&units=$unit&appid=$weatherApiKey');
+        'https://api.openweathermap.org/data/2.5/forecast?lat=$_latitude&lon=$_longitude&units=$unit&appid=$weatherApiKey');
     try {
       final response = await http.get(uri);
       if (response.statusCode == 200) {
