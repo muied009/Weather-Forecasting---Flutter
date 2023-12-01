@@ -28,6 +28,14 @@ class WeatherProvider extends ChangeNotifier {
     _longitude = lng;
   }
 
+  setTempUnit(int isOn){
+    if(isOn == 1){
+      unit = imperial;
+    }else{
+      unit = metric;
+    }
+  }
+
   getDataAfterNewLocation() {
     _getCurrentWeatherData();
     _getForecastWeatherData();

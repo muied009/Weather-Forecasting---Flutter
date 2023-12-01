@@ -23,6 +23,7 @@ class _WeatherHomeState extends State<WeatherHome> {
 
   ///Provider er object lagbe karon location er jonno lat lng provider e pathate hobe
   late WeatherProvider weatherProvider;
+  int? isOn = 0;
 
 
   @override
@@ -74,24 +75,7 @@ class _WeatherHomeState extends State<WeatherHome> {
           weatherProvider.hasDataLoaded ? Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ToggleSwitch(
-                  minHeight: 30,
-                  minWidth: 40,
-                  cornerRadius: 20,
-                  fontSize: 20,
-                  activeBgColors: const [[Colors.green], [Colors.blue]],
-                  activeFgColor: Colors.white,
-                  inactiveBgColor: Colors.grey,
-                  inactiveFgColor: Colors.white,
-                  totalSwitches: 2,
-                  labels: const [
-                    '$degreeSign$celsius',
-                    '$degreeSign$fahrenheit'
-                  ],
-                  onToggle: (index) {
-                    print('selected Item position $index');
-                  },
-                ),
+                temperatureSwitch(),
 
                 ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
 
@@ -106,6 +90,30 @@ class _WeatherHomeState extends State<WeatherHome> {
             ),
         ),
       ),
+    );
+  }
+
+  ToggleSwitch temperatureSwitch() {
+    return ToggleSwitch(
+      minHeight: 30,
+      minWidth: 40,
+      cornerRadius: 20,
+      fontSize: 20,
+      activeBgColors: isOn == 0
+          ? [[Colors.green], [Colors.blue]]
+          : [[Colors.blue], [Colors.green]],
+      activeFgColor: Colors.white,
+      inactiveBgColor: Colors.grey,
+      inactiveFgColor: Colors.white,
+      totalSwitches: 2,
+      labels: const ['$degreeSign$celsius', '$degreeSign$fahrenheit'],
+      onToggle: (value) async {
+        setState(() {
+          isOn = value;
+        });
+        weatherProvider.setTempUnit(isOn!);
+        weatherProvider.getDataAfterNewLocation();
+      },
     );
   }
 }
