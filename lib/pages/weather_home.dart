@@ -35,8 +35,6 @@ class _WeatherHomeState extends State<WeatherHome> {
       });
     });
     super.initState();
-    // Set the initial color based on isOn value
-    //activeSwitchColor = isOn == 0 ? Colors.blue : Colors.green;
   }
 
 
@@ -69,7 +67,9 @@ class _WeatherHomeState extends State<WeatherHome> {
             icon: const Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              getLocation();
+            },
             icon: const Icon(Icons.my_location),
           ),
           IconButton(
@@ -88,7 +88,7 @@ class _WeatherHomeState extends State<WeatherHome> {
           ///true hoile column return korbe
 
           weatherProvider.hasDataLoaded ? Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 //temperatureSwitch(),
                 customToggleSwitch(),
@@ -100,7 +100,6 @@ class _WeatherHomeState extends State<WeatherHome> {
                   unitSymbol: weatherProvider.tempUnitSymbol,
                 ),
                 ForecastSection(forecastItems: weatherProvider.forecastWeatherModel!.list!),
-
               ],
             ) : const Center(
               child: Text('Please Wait..'),
