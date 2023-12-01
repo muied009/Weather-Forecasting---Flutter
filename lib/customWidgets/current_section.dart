@@ -5,8 +5,9 @@ import 'package:weather_forecasting/utils/extensions.dart';
 
 class CurrentWeatherSection extends StatelessWidget {
   final CurrentWeatherModel currentWeatherModel;
+  final String unitSymbol;
 
-  const CurrentWeatherSection({super.key, required this.currentWeatherModel});
+  const CurrentWeatherSection({super.key, required this.currentWeatherModel, required this.unitSymbol});
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +22,19 @@ class CurrentWeatherSection extends StatelessWidget {
           ),
         ),
         Text(
-          '${currentWeatherModel.name!} - ${currentWeatherModel.sys!.country.toString()}',
+          '${currentWeatherModel.name!} - ${currentWeatherModel.sys!.country!}',
           style: const TextStyle(
             fontSize: 22,
           ),
         ),
         Text(
-          '${currentWeatherModel.main!.temp!.toStringAsFixed(0)}$degreeSign$celsius',
+          '${currentWeatherModel.main!.temp!.toStringAsFixed(0)}$degreeSign$unitSymbol',
           style: const TextStyle(
             fontSize: 100,
           ),
         ),
         Text(
-          'Feels Like: ${currentWeatherModel.main!.feelsLike!.toStringAsFixed(0)}$degreeSign$celsius',
+          'Feels Like: ${currentWeatherModel.main!.feelsLike!.toStringAsFixed(0)}$degreeSign$unitSymbol',
           style: const TextStyle(
             fontSize: 20,
           ),

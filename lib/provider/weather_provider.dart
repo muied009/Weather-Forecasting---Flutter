@@ -36,6 +36,8 @@ class WeatherProvider extends ChangeNotifier {
     }
   }
 
+  String get tempUnitSymbol => unit == metric ? celsius : fahrenheit;
+
   getDataAfterNewLocation() {
     _getCurrentWeatherData();
     _getForecastWeatherData();

@@ -96,8 +96,9 @@ class _WeatherHomeState extends State<WeatherHome> {
                 ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
 
                 CurrentWeatherSection(
-                    currentWeatherModel: weatherProvider
-                        .currentWeatherModel!),
+                    currentWeatherModel: weatherProvider.currentWeatherModel!,
+                  unitSymbol: weatherProvider.tempUnitSymbol,
+                ),
                 ForecastSection(forecastItems: weatherProvider.forecastWeatherModel!.list!),
 
               ],
