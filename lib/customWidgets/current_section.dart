@@ -45,7 +45,7 @@ class CurrentWeatherSection extends StatelessWidget {
                 '$prefixWeatherIconUrl${currentWeatherModel.weather![0].icon}$suffixWeatherIconUrl'
             ),
             Text(
-              currentWeatherModel.weather![0].description.toString(),
+              currentWeatherModel.weather![0].description!,
               style: const TextStyle(
                 fontSize: 15,
               ),

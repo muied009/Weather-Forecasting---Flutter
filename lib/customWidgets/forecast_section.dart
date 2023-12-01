@@ -39,7 +39,7 @@ class ForecastSection extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        item.weather![0].description.toString(),
+                        item.weather![0].description!,
                         style: const TextStyle(
                           fontSize: 15,
                         ),
