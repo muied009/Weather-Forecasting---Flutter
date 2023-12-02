@@ -63,7 +63,21 @@ class _WeatherHomeState extends State<WeatherHome> {
         backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showSearch(
+                context: context, 
+                delegate: _CitySearchDelegate(),
+              ).then((value) {
+                if(value != null && value.isNotEmpty){
+                  weatherProvider.convertCityToCoordinate(value)
+                  .then((value) {
+                    showSnackBarMsg(context, value);
+                  });
+                }
+              });
+              ///upore value ta holo 1ta string jeta search theke query te ase
+
+            },
             icon: const Icon(Icons.search),
           ),
           IconButton(
@@ -181,5 +195,59 @@ class _WeatherHomeState extends State<WeatherHome> {
       ],
     );
   }
+}
 
+class _CitySearchDelegate extends SearchDelegate<String>{
+
+  ////Search Page er appbar e ki ki rakhbo seta List akare return korte hobe
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(onPressed: (){
+        query = '';
+      }, icon: const Icon(Icons.clear),
+      )
+    ];
+  }
+
+  ////example = kuno page e gele leading icon thake seita kemon hobe setar jonno
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return
+      IconButton(onPressed: (){
+        close(context, '');
+      }, icon: const Icon(Icons.arrow_back),
+      );
+  }
+
+  /////search er por result ta show korar jonno/kon widget e show korbo
+  @override
+  Widget buildResults(BuildContext context) {
+    return ListTile(
+      onTap: (){
+        close(context, query);
+      },
+      title: Text(query),
+      leading: const Icon(Icons.search),
+    );
+  }
+
+
+  /////suggestion e kisu show koraite chaile
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    ///query = user jeta type korbe
+    final filterList = query.isEmpty ? cities : cities.where((city) =>
+        city.toLowerCase().startsWith(query)).toList() ;
+
+    return ListView.builder(itemBuilder: (context, index) => ListTile(
+    onTap: (){
+      //// close = serach interface ta close kore dibe
+      close(context, filterList[index]);
+    },
+      title: Text(filterList[index]),
+    ),
+    itemCount: filterList.length,);
+  }
+  
 }

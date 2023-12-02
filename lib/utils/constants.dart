@@ -18,6 +18,6 @@ const fahrenheit = 'F';
 const String metric = 'metric';
 const String imperial = 'imperial';
 const cities = ['Athens', 'Berlin', 'Cairo', 'Chittagong', 'Dhaka', 'Jakarta', 'London', 'Los Angeles', 'Moscow', 'New York', 'Sydney', 'Sylhet', 'Tokyo'];
-final backgroundColor = Colors.blue.shade900;
+const backgroundColor = Colors.black;
 //const backgroundColor = Color.fromARGB(255, 18, 18, 61);
 const cardBackgroundColor = Color.fromARGB(255, 54, 56, 98);

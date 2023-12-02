@@ -40,7 +40,11 @@ dependencies:
   intl:
   shared_preferences:
   geolocator:
+
+  #city name k lat long e convert korar jonno geoCoding
   geocoding:
+  #city name k lat long e convert korar jonno geoCoding
+
   google_fonts:
   flutter_switch: ^0.3.2
   toggle_switch: ^2.1.0

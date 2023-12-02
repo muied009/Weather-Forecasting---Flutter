@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -37,6 +38,22 @@ class WeatherProvider extends ChangeNotifier {
   }
 
   String get tempUnitSymbol => unit == metric ? celsius : fahrenheit;
+
+  Future<String> convertCityToCoordinate(String city) async{
+    try{
+     final locationList = await locationFromAddress(city);
+     if (locationList.isNotEmpty){
+       final location = locationList.first;
+       setNewLocation(location.latitude, location.longitude);
+       getDataAfterNewLocation();
+       return 'Fetching Data For $city';
+     }else {
+       return 'Could Not Found The Location';
+     }
+    } catch (error) {
+      return error.toString();
+    }
+  }
 
   getDataAfterNewLocation() {
     _getCurrentWeatherData();
