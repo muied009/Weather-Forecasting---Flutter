@@ -9,6 +9,7 @@ import 'package:weather_forecasting/provider/weather_provider.dart';
 import 'package:weather_forecasting/utils/extensions.dart';
 import 'package:weather_forecasting/utils/location_service.dart';
 
+import '../customWidgets/parallax_background.dart';
 import '../utils/constants.dart';
 
 class WeatherHome extends StatefulWidget {
@@ -101,21 +102,26 @@ class _WeatherHomeState extends State<WeatherHome> {
 
           ///true hoile column return korbe
 
-          weatherProvider.hasDataLoaded ? Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //temperatureSwitch(),
-                customToggleSwitch(),
+          weatherProvider.hasDataLoaded ? Stack(
+            children: [
+              ParallaxBackground(),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //temperatureSwitch(),
+                    customToggleSwitch(),
 
-                ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
+                    ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
 
-                CurrentWeatherSection(
-                    currentWeatherModel: weatherProvider.currentWeatherModel!,
-                  unitSymbol: weatherProvider.tempUnitSymbol,
+                    CurrentWeatherSection(
+                        currentWeatherModel: weatherProvider.currentWeatherModel!,
+                      unitSymbol: weatherProvider.tempUnitSymbol,
+                    ),
+                    ForecastSection(forecastItems: weatherProvider.forecastWeatherModel!.list!),
+                  ],
                 ),
-                ForecastSection(forecastItems: weatherProvider.forecastWeatherModel!.list!),
-              ],
-            ) : const Center(
+            ],
+          ) : const Center(
               child: Text('Please Wait..'),
             ),
         ),
