@@ -38,25 +38,28 @@ class _ParallaxBackgroundState extends State<ParallaxBackground> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
-      child: Stack(
-        children: [
-          ///AnimatedPositioned = child gulo k lef to right / right to left / top to bottom / bottom to top move kora te pari
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 50),
-            left: offset + screenWidth,
-            child: SizedBox(
-              width: rowWidth,
-              child: Opacity(
-                opacity: rowOp,
-                child: Row(
-                  children: cloudImages.map((imageOfClouds) => Expanded(child: Image.asset(imageOfClouds, height: 400,))).toList(),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+      child: SizedBox(
+        height: 400,
+        child: Stack(
+          children: [
+            ///AnimatedPositioned = child gulo k lef to right / right to left / top to bottom / bottom to top move kora te pari
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 50),
+              left: offset + screenWidth,
+              child: SizedBox(
+                width: rowWidth,
+                child: Opacity(
+                  opacity: rowOp,
+                  child: Row(
+                    children: cloudImages.map((imageOfClouds) => Expanded(child: Image.asset(imageOfClouds, height: 400,))).toList(),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
 
