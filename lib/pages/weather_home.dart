@@ -109,7 +109,16 @@ class _WeatherHomeState extends State<WeatherHome> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //temperatureSwitch(),
-                    customToggleSwitch(),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          customToggleSwitch(),
+                        ],
+                      ),
+                    ),
+
 
                     ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
 

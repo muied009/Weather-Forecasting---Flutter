@@ -39,7 +39,7 @@ class _ParallaxBackgroundState extends State<ParallaxBackground> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 400,
       child: Stack(
         children: [
           ///AnimatedPositioned = child gulo k lef to right / right to left / top to bottom / bottom to top move kora te pari
@@ -51,7 +51,7 @@ class _ParallaxBackgroundState extends State<ParallaxBackground> {
               child: Opacity(
                 opacity: rowOp,
                 child: Row(
-                  children: cloudImages.map((imageOfClouds) => Expanded(child: Image.asset(imageOfClouds, height: 200,))).toList(),
+                  children: cloudImages.map((imageOfClouds) => Expanded(child: Image.asset(imageOfClouds, height: 400,))).toList(),
                 ),
               ),
             ),
