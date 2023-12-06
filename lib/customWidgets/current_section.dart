@@ -17,26 +17,27 @@ class CurrentWeatherSection extends StatelessWidget {
           getFormattedDateTime(currentWeatherModel.dt!,
               pattern: 'EEE MMM dd, yyyy'),
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 22,
             color: Colors.white60,
           ),
         ),
+    const SizedBox(height: 10,),
         Text(
           '${currentWeatherModel.name!} - ${currentWeatherModel.sys!.country!}',
           style: const TextStyle(
-            fontSize: 22,
+            fontSize: 25,
           ),
         ),
         Text(
           '${currentWeatherModel.main!.temp!.toStringAsFixed(0)}$degreeSign$unitSymbol',
           style: const TextStyle(
-            fontSize: 100,
+            fontSize: 120,
           ),
         ),
         Text(
           'Feels Like: ${currentWeatherModel.main!.feelsLike!.toStringAsFixed(0)}$degreeSign$unitSymbol',
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 25,
           ),
         ),
         Row(
@@ -45,10 +46,11 @@ class CurrentWeatherSection extends StatelessWidget {
             Image.network(
                 '$prefixWeatherIconUrl${currentWeatherModel.weather![0].icon}$suffixWeatherIconUrl'
             ),
+            const SizedBox(width: 10,),
             Text(
               currentWeatherModel.weather![0].description!,
               style: const TextStyle(
-                fontSize: 15,
+                fontSize: 20,
               ),
             ),
           ],

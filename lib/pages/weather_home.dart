@@ -109,15 +109,7 @@ class _WeatherHomeState extends State<WeatherHome> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //temperatureSwitch(),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          customToggleSwitch(),
-                        ],
-                      ),
-                    ),
+                    customToggleSwitch(),
 
 
                     ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
@@ -162,52 +154,55 @@ class _WeatherHomeState extends State<WeatherHome> {
   }*/
 
   Widget customToggleSwitch() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              isOn = 0;
-              activeSwitchColor = Colors.blue;
-            });
-            setTempIntStatus(isOn);
-            weatherProvider.setTempUnit(isOn);
-            weatherProvider.getDataAfterNewLocation();
-          },
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: isOn == 0 ? Colors.blue : Colors.grey,
-            ),
-            child: const Text(
-              '$degreeSign$celsius',
-              style: TextStyle(color: Colors.white,fontSize: 25),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              isOn = 1;
-              activeSwitchColor = Colors.green;
-            });
-            setTempIntStatus(isOn);
-            weatherProvider.setTempUnit(isOn);
-            weatherProvider.getDataAfterNewLocation();
-          },
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: isOn == 1 ? Colors.green : Colors.grey,
-            ),
-            child: const Text(
-              '$degreeSign$fahrenheit',
-              style: TextStyle(color: Colors.white,fontSize: 25),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isOn = 0;
+                activeSwitchColor = Colors.blue;
+              });
+              setTempIntStatus(isOn);
+              weatherProvider.setTempUnit(isOn);
+              weatherProvider.getDataAfterNewLocation();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: isOn == 0 ? Colors.blue : Colors.grey,
+              ),
+              child: const Text(
+                '$degreeSign$celsius',
+                style: TextStyle(color: Colors.white,fontSize: 20),
+              ),
             ),
           ),
-        ),
-      ],
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isOn = 1;
+                activeSwitchColor = Colors.green;
+              });
+              setTempIntStatus(isOn);
+              weatherProvider.setTempUnit(isOn);
+              weatherProvider.getDataAfterNewLocation();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: isOn == 1 ? Colors.green : Colors.grey,
+              ),
+              child: const Text(
+                '$degreeSign$fahrenheit',
+                style: TextStyle(color: Colors.white,fontSize: 20),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

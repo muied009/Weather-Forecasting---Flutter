@@ -4,8 +4,14 @@ import 'package:weather_forecasting/provider/weather_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
   runApp( ChangeNotifierProvider(
     create: (context) => WeatherProvider(),
     child: const MyApp()

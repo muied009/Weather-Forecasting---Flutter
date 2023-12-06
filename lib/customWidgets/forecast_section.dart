@@ -12,14 +12,14 @@ class ForecastSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 160,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: forecastItems.length,
         itemBuilder: (context, index) {
           final item = forecastItems[index];
           return AspectRatio(
-            aspectRatio: 0.7,
+            aspectRatio: 0.8,
             child: Padding(
               padding: const EdgeInsets.all(2.0),
               child: Card(
