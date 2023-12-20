@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:weather_forecasting/customWidgets/current_section.dart';
@@ -122,9 +123,17 @@ class _WeatherHomeState extends State<WeatherHome> {
                   ],
                 ),
             ],
-          ) : const Center(
-              child: Text('Please Wait..'),
-            ),
+          ) : const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Data Is Loading....."),
+              SizedBox(height: 20,),
+              SpinKitCircle(
+                color: Colors.white, // Choose your desired color
+                size: 50.0, // Adjust the size as needed
+              ),
+            ],
+          ),
         ),
       ),
     );
