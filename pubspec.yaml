@@ -40,7 +40,6 @@ dependencies:
   intl:
   shared_preferences:
   geolocator:
-  flutter_spinkit: ^5.0.0
 
   #city name k lat long e convert korar jonno geoCoding
   geocoding:
