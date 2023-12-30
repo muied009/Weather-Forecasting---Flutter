@@ -88,13 +88,13 @@ class _WeatherHomeState extends State<WeatherHome> {
             },
             icon: const Icon(Icons.my_location),
           ),
-          IconButton(
+          /*IconButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(
                   builder: (context) => const SettingsPage()));
             },
             icon: const Icon(Icons.settings),
-          ),
+          ),*/
         ],
       ),
       body: Center(
