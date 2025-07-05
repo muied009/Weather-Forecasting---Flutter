@@ -1,44 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:weather_forecasting/customWidgets/current_section.dart';
 import 'package:weather_forecasting/customWidgets/forecast_section.dart';
+import 'package:weather_forecasting/customWidgets/parallax_background.dart';
 import 'package:weather_forecasting/pages/settings.dart';
 import 'package:weather_forecasting/provider/weather_provider.dart';
+import 'package:weather_forecasting/utils/constants.dart';
 import 'package:weather_forecasting/utils/extensions.dart';
 import 'package:weather_forecasting/utils/location_service.dart';
 
-import '../customWidgets/parallax_background.dart';
-import '../utils/constants.dart';
-
 class WeatherHome extends StatefulWidget {
-  const WeatherHome({
-    super.key,
-  });
+  const WeatherHome({super.key});
 
   @override
   State<WeatherHome> createState() => _WeatherHomeState();
 }
 
 class _WeatherHomeState extends State<WeatherHome> {
-
-  ///Provider er object lagbe karon location er jonno lat lng provider e pathate hobe
   late WeatherProvider weatherProvider;
   int isOn = 0;
-  late Color activeSwitchColor;
+  late Color activeSwitchColor = Colors.blue;
 
   @override
   void initState() {
-    getTempIntStatus().then((value) {
-      setState(() {
-        isOn = value!;
-      });
-    });
     super.initState();
+    _initializeApp();
   }
 
+  Future<void> _initializeApp() async {
+    final tempUnit = await getTempIntStatus();
+    if (mounted) {
+      setState(() {
+        isOn = tempUnit ?? 0;
+      });
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -48,13 +46,30 @@ class _WeatherHomeState extends State<WeatherHome> {
     super.didChangeDependencies();
   }
 
-  getLocation() async {
-    final position = await determinePosition();
-    weatherProvider.setNewLocation(position.latitude, position.longitude);
-    weatherProvider.setTempUnit(await getTempIntStatus());
-    weatherProvider.getDataAfterNewLocation();
-  }
+  Future<void> getLocation() async {
+    try {
+      final status = await Permission.location.request();
+      if (!status.isGranted) {
+        showSnackBarMsg(context, 'Location permission denied');
+        return;
+      }
 
+      final position = await determinePosition();
+      weatherProvider.setNewLocation(position.latitude, position.longitude);
+      final tempUnit = await getTempIntStatus();
+      weatherProvider.setTempUnit(tempUnit ?? 0);
+      await weatherProvider.getDataAfterNewLocation();
+    } catch (e) {
+      if (e.toString().contains('Location services are disabled')) {
+        showSnackBarMsg(context, 'Please enable location services');
+      } else {
+        showSnackBarMsg(context, 'Error getting location: ${e.toString()}');
+      }
+      // Fallback to default location
+      weatherProvider.setNewLocation(0.0, 0.0);
+      await weatherProvider.getDataAfterNewLocation();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +82,14 @@ class _WeatherHomeState extends State<WeatherHome> {
           IconButton(
             onPressed: () {
               showSearch(
-                context: context, 
+                context: context,
                 delegate: _CitySearchDelegate(),
               ).then((value) {
-                if(value != null && value.isNotEmpty){
-                  weatherProvider.convertCityToCoordinate(value)
-                  .then((value) {
-                    showSnackBarMsg(context, value);
+                if (value != null && value.isNotEmpty) {
+                  weatherProvider.convertCityToCoordinate(value).then((result) {
+                    if (mounted) {
+                      showSnackBarMsg(context, result);
+                    }
                   });
                 }
               });
@@ -83,9 +99,7 @@ class _WeatherHomeState extends State<WeatherHome> {
             icon: const Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {
-              getLocation();
-            },
+            onPressed: getLocation,
             icon: const Icon(Icons.my_location),
           ),
           /*IconButton(
@@ -106,22 +120,29 @@ class _WeatherHomeState extends State<WeatherHome> {
           weatherProvider.hasDataLoaded ? Stack(
             children: [
               ParallaxBackground(),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    //temperatureSwitch(),
-                    customToggleSwitch(),
+              SingleChildScrollView(  // <-- Add this wrapper
+                child: ConstrainedBox(  // <-- Add this for proper constraints
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height,
+                  ),
+                  child:  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //temperatureSwitch(),
+                      customToggleSwitch(),
 
 
-                    ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
+                      ///jehetu provider e nullable ache but current section e null assertion tai eikhane ( ! ) dite hobe
 
-                    CurrentWeatherSection(
+                      CurrentWeatherSection(
                         currentWeatherModel: weatherProvider.currentWeatherModel!,
-                      unitSymbol: weatherProvider.tempUnitSymbol,
-                    ),
-                    ForecastSection(forecastItems: weatherProvider.forecastWeatherModel!.list!),
-                  ],
+                        unitSymbol: weatherProvider.tempUnitSymbol,
+                      ),
+                      ForecastSection(forecastItems: weatherProvider.forecastWeatherModel!.list!),
+                    ],
+                  ),
                 ),
+              ),
             ],
           ) : const Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -260,13 +281,13 @@ class _CitySearchDelegate extends SearchDelegate<String>{
         city.toLowerCase().startsWith(query)).toList() ;
 
     return ListView.builder(itemBuilder: (context, index) => ListTile(
-    onTap: (){
-      //// close = serach interface ta close kore dibe
-      close(context, filterList[index]);
-    },
+      onTap: (){
+        //// close = serach interface ta close kore dibe
+        close(context, filterList[index]);
+      },
       title: Text(filterList[index]),
     ),
-    itemCount: filterList.length,);
+      itemCount: filterList.length,);
   }
-  
+
 }
